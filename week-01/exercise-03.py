@@ -10,6 +10,8 @@ thrown if the string is not an integer. For example, if the function is provided
 
 """
 
+# THe function returns the same user input after type casting
+
 
 def type_casting(user_input):
     return user_input
@@ -17,6 +19,7 @@ def type_casting(user_input):
 
 if __name__ == "__main__":
     user_input = int(input("Please enter number :"))
+    # Checking the user input before passing it to the function
     try:
         print(type_casting(user_input))
     except ValueError as e:
