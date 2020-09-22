@@ -1,0 +1,546 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{acronym}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage[dvipsnames,table,xcdraw]{xcolor}
+\usepackage[margin=3cm]{geometry}
+\usepackage[parfill]{parskip}
+\usepackage{microtype}
+\usepackage[yyyymmdd]{datetime}
+\usepackage{hyperref}
+
+\headheight = 14pt
+\definecolor{codebkgnd}{RGB}{230,230,200}
+
+\begin{document}
+\title{An introduction to the Python programming language}
+\author{W. H. Bell}
+\date{
+\today
+}
+
+\maketitle
+
+\begin{abstract}
+
+The basics of the Python programming language are discussed using a series of example programs.  These example programs introduce concepts, such as data types, functions, classes, mathematical and logical operators, and input and output functionality.
+\end{abstract}
+
+
+\clearpage
+\newpage
+
+{\parskip=0pt
+\tableofcontents
+}
+
+\clearpage
+\newpage
+
+\pagestyle{fancy}
+
+\lstset{language = Python}
+\lstset{xleftmargin = 2em}
+\lstset{framexleftmargin = 2em}
+\lstset{
+  language = Python,
+  basicstyle=\small\ttfamily,
+  numbers=left,                   
+  numberstyle=\small\color{blue},  
+  stepnumber=1,                   
+  numbersep=5pt,                  
+  backgroundcolor=\color{codebkgnd}, 
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  rulecolor=\color{black}, 
+  tabsize=4,                      % sets default tabsize to 2 spaces
+  captionpos=t,                   % sets the caption-position to top
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=false,  % sets if automatic breaks should only happen at whitespace
+  keywordstyle=\color{Sepia},      % keyword style
+  commentstyle=\color{MidnightBlue},   % comment style
+  stringstyle=\color{OrangeRed}      % string literal style
+}
+\section{Introduction}
+
+The Python programming language is widely used for data analysis and data science.  It is an interpreted programming language that has a large range of libraries associated with it.  These libraries provide graphical user interface, web service, data analysis, mathematical and data visualisation functionality.  There are also database drivers to allow connections to traditional relational databases and NoSQL solutions.
+
+Python is not compiled, but is executed with the Python Interpreter.  This implies that algorithms that have been written in Python are approximately twice as slow as those that have been implemented in a compiled language, such as C or C++.  Python libraries are often written in C, such that more CPU or I/O intensive functionality is implemented efficient.  The Python language supports coupling Python to C, C++ and other languages, allowing existing libraries to be reused.
+
+This document discusses a series of programming examples that illustrate the functionality of the Python programming language.  Each example introduces new concepts and builds on concepts that are introduced in previous examples.  These examples should be run and experimented with by modifying the source code, such that the functionality is understood.
+
+\section{Reference material}
+
+Reference material is available for Python 3 online at:
+%
+\begin{itemize}
+\item \href{https://docs.python.org/3/}{https://docs.python.org/3/}~\cite{python-doc}
+\item \href{https://www.w3schools.com/python/}{https://www.w3schools.com/python/}~\cite{python-w3schools}
+\end{itemize}
+%
+The w3schools web site provides both example code and the ability to try out some of the functionality.
+
+\section{Software Installation}
+This document assumes that Python 3.6 or higher has been installed.
+
+Python 2.7 is still used for several purposes and is packaged with Linux distributions.  However, the functionality of Python 2.7 is different to Python 3, especially around string manipulation.  Python is being actively developed from Python 3.  Therefore, this course focuses on Python 3.  Python 3 can be installed on Microsoft Windows, Linux and Mac (OSX) operating systems.
+
+\subsection{Microsoft Windows}
+Python can be installed on Microsoft Windows using Anaconda~\cite{anaconda}.  Anaconda provides a large range of libraries that are used for data science and other activities.
+
+\subsection{Linux}
+Python 3 can be installed using the package manager of all major Linux distributions.  Refer to documentation for specific Linux distributions to perform the installation.
+
+\section{Using Python}
+Python can be used interactively or to execute a Python script.
+
+\subsection{Interactive shell}
+To start Python interactively, a Python shell can be started from Anaconda or on Linux or OSX.  This opens a prompt, as shown in Listing~\ref{listing:python-prompt}.
+
+\begin{lstlisting}[caption={The Python prompt.},label=listing:python-prompt]
+>>>
+\end{lstlisting}
+
+Once a Python prompt has been opened, Python programming commands can be typed as illustrated in Listing~\ref{listing:prompt-helloworld}.
+
+\begin{lstlisting}[caption={Using the Python prompt.},label=listing:prompt-helloworld]
+>>> print("Hello World")
+Hello World
+>>> x = 4
+>>> x + 2
+6
+\end{lstlisting}
+
+When a Python command prints information to the standard output or standard error, it is shown below the command.  This can be seen at Line 1 and 2, where the print command is used to print to the standard output.
+
+When a Python operator or function returns a value and the value is not assigned to a variable, the value is printed below the operator or function.  This can be seen at Line 4 and 5.  The value of 4 is assigned to the variable x at Line 3.  When 2 is added to the value of 4, it is not assigned to a variable.  Therefore, it is printed on the screen at Line 5.
+
+\subsection{Executing scripts}
+
+While the Python shell provides an ideal user interface to experiment with commands, it is often necessary to re-run commands or particular Python scripts.  Python scripts can be created with a text editor or integrated development environment, such as offered using Anaconda.  Once the script has been created it can be executed using the Python interpreter.
+
+A first script is given in Listing~\ref{listing:helloworld}.  Line~1 contains a comment that informs Linux or OSX how to execute the script.  Line~3 prints a text string to the standard output.  This implies that the text is printed to the screen, unless it is redirected to a file by the user.
+
+\lstinputlisting[caption=HelloWorld.py,label=listing:helloworld]{../01/python/HelloWorld.py}
+
+The rest of this document assumes that the examples provided are run as Python scripts.  Some more examples of commenting Python programs are given in Section~\ref{section:comments}.
+
+\section{Functions}
+
+\subsection{The main function}
+
+When a Python script is executed using the Python interpreter, it evaluates each command in order starting from the top of the Python script file.  When a Python script is within a package, it may be necessary to execute the script or include it within another script by importing functionality.  To cause the script to be executed when called, a main function is defined using the syntax given in Listing~\ref{listing:main-function}.
+
+\lstinputlisting[caption=Main.py,label=listing:main-function,firstline=3]{../01/python/Main.py}
+
+A function called \texttt{main} is defined at Line 1 of Listing~\ref{listing:main-function}.  This function includes one \texttt{print} function call to print a text string on the screen.   Unlike other languages, such as C, C++, C\#, Java and PHP, Python relies on indenting to describe the structure of the program.  The \texttt{print} function at Line 2 is indented by four spaces.  Python will tolerate different numbers of spaces being used to indent source code, as long as the indenting is consistent within a Python script file.  This document and the examples presented use four spaces for each indent, since this is commonly used by other Python programmers.
+
+Once a function is defined, it can be called elsewhere in a program.  The \texttt{main} function is called at Line 5 of Listing~\ref{listing:main-function}.  The \texttt{\_\_name\_\_} variable is automatically set to be equal to \texttt{"\_\_main\_\_"} when the script is executed.  Therefore, the if condition is true when the script is executed.  Similar to the function definition, Line 5 is indented since the \texttt{main} function should only be called if the \texttt{if} statement is true.  Conditional statements are discussed more in section~\ref{section:conditions}.
+
+\subsection{Defining other functions}
+
+Listing~\ref{listing:functions} contains three functions.  The \texttt{main} function calls \texttt{func1}, passing the text string \texttt{"Functions"} to \texttt{func1}.  Then \texttt{func1} passes the text string to \texttt{func2}, using a variable called \texttt{stringValue}.  The function \texttt{func2} returns a text string value that is assigned to the variable \texttt{returnValue}, which is then printed to the standard output.  The function \texttt{func2} returns the text string that is passed to it.
+
+\lstinputlisting[caption=Functions.py,label=listing:functions,firstline=3]{../01/python/Functions.py}
+
+The purpose of Listing~\ref{listing:functions} is to demonstrate how to pass a text string to a function and return a value.  Python functions may or may not return a value.  If a function does not explicitly return a value, then the value \texttt{None} is returned.  The value \texttt{None} is commonly referred to as null in other programming languages and is the absence of a value.
+
+\section{Basic data types}
+
+\subsection{Text strings \label{section:strings}}
+
+When writing computer programs, variables that contain text are normally referred to as strings.  An example of string variables is given in Listing~\ref{listing:strings}.
+
+\lstinputlisting[caption=StringVariables.py,label=listing:strings,firstline=3]{../01/python/StringVariables.py}
+
+The Listing~\ref{listing:strings} contains a single function called \texttt{stringVariables}, which is passed a single string variable called \texttt{stringValue}.  The name used for this variable within the function does not have to match the name used outside the function.
+
+Within the function \texttt{stringVariables}, a new value is assigned to \texttt{stringValue} at Line~2.  Then more characters are appended to \texttt{stringValue} at Line~5.  Python supports string appending using both the \texttt{+} and \texttt{+=} operator.  The \texttt{+=} operator appends to the string variable and assigns the result to the original variable.
+
+The \texttt{+} operator is used at Line~9 to append several characters together, these includes a tab character (\texttt{$\backslash$t}) and a newline character (\texttt{$\backslash$n}).
+
+Some of the string functions are demonstrated from Line~12 to 15.  These are the string \texttt{replace} function, the \texttt{split} function and the \texttt{strip} function.  The \texttt{replace} function performs a string find and replace operation, returning the resulting string.  The \texttt{split} function splits the string into a list of strings, using a delimiter which can be specified.  In this example, the string is split using the newline character.  The first element of the resulting list is used by specifying it with \texttt{[0]}.  (Lists are discussed in Section~\ref{section:lists} of this document.)  The \texttt{strip} function removes leading and trailing white space from the string.
+
+Line~19 demonstrates how to use the \texttt{find} function to find a string within a string.  The \texttt{find} function returns -1 if the string is not found or the position of the string within the string if the string is found.  Since the value returned by \texttt{find} is a numeric value, it is cast to a string using the \texttt{str} function before it can be combined with a string.  Once the value has been cast to a string, it is appended to other strings and printed to the standard output.
+
+After the function \texttt{stringVariables} has been called, the value of the variable \texttt{stringValue} is printed out at Line~24.  None of the modifications that are made within the function \texttt{stringVariables} affect this output, since a string variable is passed by value into the function rather than by reference.  String variables are therefore said to be immutable.
+
+\subsection{Numeric types}
+
+An example of numeric types is given in Listing~\ref{listing:numeric}.  The \texttt{math} library is imported to allow the use of \texttt{math.cos} function and the \texttt{math.pi} constant.  The sample program includes a single function called \texttt{numericVariables}.  The function \texttt{numericVariables} is passed two numeric variables, called \texttt{firstValue} and \texttt{secondValue}.  The values of these two variables are modified within the function \texttt{numericVariables}.  However, this has no effect on their values in the calling code, since the variables are passed by value rather than by reference.  The \texttt{print} statement at Line 20 demonstrates this by printing the values of the variables.  Similar to strings, numeric variables are also immutable.
+
+\lstinputlisting[caption=NumericVariables.py,label=listing:numeric,firstline=3]{../01/python/NumericVariables.py}
+
+The variables \texttt{firstValue} and \texttt{secondValue} are defined at Line 17 and 18, by assigning a numeric value to these variables.  Once a value has been assigned, the two variables are numeric variables.  Therefore, to combine them with a text string, they have to be cast to text strings by using the function \texttt{str}.
+
+The \texttt{numericVariables} function adds 1 to the value of \texttt{firstValue} at Line~4 and 5.  The operator \texttt{+} adds the two values together, whereas the operator \texttt{+=} is used to add the value to the existing \texttt{firstValue} variable and assigns the result back to \texttt{firstValue}.
+
+Listing~\ref{listing:numeric} also demonstrates how to cast a floating point number to an integer by using the \texttt{int} function.  This rounds down to the nearest whole number.  Line 13 demonstrates how to use the cosine function and print its result.
+
+\subsection{Boolean type}
+
+Python provides a boolean type that can be used to store the value \texttt{True} or \texttt{False}.  A boolean value can be filled with \texttt{True} or \texttt{False} or using a conditional statement.  Listing~\ref{listing:boolean} demonstrates how a boolean can be used.
+
+\lstinputlisting[caption=BooleanVariables.py,label=listing:boolean,firstline=3]{../01/python/BooleanVariables.py}
+
+Listing~\ref{listing:boolean} creates a variable called \texttt{booleanValue}.  This variable is assigned \texttt{False}.  The function \texttt{booleanVariable} is then called.  Following the function call, the value of \texttt{booleanValue} is printed to the standard output.
+
+The function \texttt{booleanVariable} assigns the value \texttt{True} to \texttt{booleanValue}.  This is then combined with \texttt{False}, using a bitwise logic AND operator \texttt{\&=}.  This forms the bitwise and with the value in \texttt{booleanValue} and then assigns the result to \texttt{booleanValue}.
+
+Similar to strings and simple numeric types, booleans are immutable.  Therefore, the value of \texttt{booleanValue} remains equal to \texttt{False} after the \texttt{booleanVariable} function call.
+
+\section{Basic data structures}
+
+Python programmers can access many different data structures, where this documentation only covers a few of the basic structures.
+
+\subsection{Lists \label{section:lists}}
+
+A list provides sequential storage of zero or more values.  Elements of a list can be removed and new ones can be assigned.  Lists can be sorted or searched for particular values.  Unlike basic variable types such as strings, integers or floats, lists are passed by reference into functions.  They are said to be mutable.  Therefore, a copy of a list should be made if the original values need to be retained after a function call performs some modifications.
+
+The Listing~\ref{listing:lists} introduces several features of Python lists.  The example, includes a single function called \texttt{lists}.  Before this function is called, the list \texttt{listValues} is initialised with two zeros at Line~20.  The syntax \texttt{[v]*n} causes a list to be created with \texttt{n} elements, where each element contains a copy of the value \texttt{v}.  The list is copied at Line 22 to demonstrate that lists are passed by reference to functions.
+
+\lstinputlisting[caption=NumericVariables.py,label=listing:lists,firstline=3]{../01/python/Lists.py}
+
+The function \texttt{lists} deletes all of the elements of the \texttt{listValues} list at Line~4.  Then a new element is appended at Line~6.  The new element is then removed at Line~9.  Line~12 uses the \texttt{range} function to create a list that contains the values 0 to 4.  These values are appended to \texttt{listValues}.  Then another range of 0 to 3 is appended to \texttt{listValues} at Line 15.  The values in \texttt{listValues} are then sorted.
+
+Python lists can be used to store basic types or more complicated types, such as lists, dictionaries or objects.
+
+\subsection{Dictionaries}
+
+Python dictionaries are used to store a key and value pair.  The key value might be an integer or string value, whereas the value could be a simple or more complicated type.  The Listing~\ref{listing:dicts} introduces dictionaries and some of their functionality.
+
+\lstinputlisting[caption=Dicts.py,label=listing:dicts,firstline=3]{../01/python/Dicts.py}
+
+The Listing~\ref{listing:dicts} creates a dictionary called \texttt{dictValues}.  One element is added that contains a host name and an IP address string.  The dictionary is then copied, such that it can be used after the function call.  The \texttt{dicts} function is called to update the dictionary.  After this function, the values in \texttt{dictValues} and \texttt{copyDict} are printed to the standard output.
+
+The \texttt{dicts} function clears the dictionary that has been passed to it.  Similar to lists, dictionaries are passed by reference into functions and are said to be mutable.  Therefore, the \texttt{dicts} function clears the single element that was added before the function was called.  The \texttt{dicts} function then adds four elements, removes a selected element and prints the key and values separately.
+
+\subsection{Tuples}
+
+A tuple is an ordered collection that cannot be modified once it has been created.  They are said to be immutable.  Tuples may be returned by functions or used in function calls.  An example of a tuple is given in Listing~\ref{listing:tuples}.
+
+\lstinputlisting[caption=Tuples.py,label=listing:tuples,firstline=3]{../01/python/Tuples.py}
+
+Listing~\ref{listing:tuples} calls the function \texttt{buildTuple}, which returns a tuple.  All of the values and a selected range of values are then printed to the standard output.
+
+\subsection{Sets}
+
+A set is an unordered and unindexed collection.  Listing~\ref{listing:sets} demonstrates some of the features of sets.  Similar to lists, they are passed by reference and are said to be mutable.
+
+\lstinputlisting[caption=Sets.py,label=listing:sets,firstline=3]{../01/python/Sets.py}
+
+Listing~\ref{listing:sets} creates a set called \texttt{setValues}.  This set is copied, such that it can be compared with the original set after modifications have taken place.  Then the function \texttt{sets} is called to update the values of the set.  The function \texttt{sets} removes a random element from the set and adds a new one.
+
+\section{Conditions and loops}
+
+\subsection{Conditions \label{section:conditions}}
+
+Conditions are used to control the flow of a program.  Python supports several different logic conditions, where some of these are used in Listing~\ref{listing:conditions}.
+
+\lstinputlisting[caption=Conditions.py,label=listing:conditions,firstline=3]{../02/python/Conditions.py}
+
+Listing~\ref{listing:conditions} calls the \texttt{conditions} function.  This function calls other functions to demonstrate some commonly used conditions.
+
+The \texttt{returnsNone} function always returns \texttt{None}.  This is the absence of a value, sometimes referred to as null in other programming languages.  The value returned from \texttt{returnsNone} is compared with \texttt{None} at Line~38.
+
+The \texttt{conditionalOutput} function returns a value or \texttt{None} depending on the input value.  This is achieved using a numeric greater than (\texttt{>}) comparison.
+
+The \texttt{valueInList} function returns the value if the value is found in the list and \texttt{None} if the value is not found in the list.  If a function does not implement a specific return type, then it returns \texttt{None}.
+
+The \texttt{powerState} function compares the input \texttt{powerName} variable with different values and either returns a numeric value or \texttt{None}.
+
+The \texttt{ipAddress} function creates a dictionary that contains two host names and their associated IP addresses.  Then it tests to see if the \texttt{machineName} provided has a matching dictionary key.  If the dictionary key is found, the associated IP address is returned.  If the dictionary key is not found, then the function returns \texttt{None}.
+
+The \texttt{notNone} function returns \texttt{True} if the value is not \texttt{None} and \texttt{False} if it is \texttt{None}.
+
+The \texttt{notZero} function returns \texttt{True} if the supplied value is not equal to zero.
+
+The conditional operators are summarised in section~\ref{section:logical-operators}, whereas the membership operators are given in section~\ref{section:id-mem-operators}.
+
+\subsection{Loops}
+
+Operations that need to be repeated can be efficiently implemented using loops.  Python allows several styles of loop, where two are shown in Listing~\ref{listing:loops}.
+
+\lstinputlisting[caption=Loops.py,label=listing:loops,firstline=3]{../02/python/Loops.py}
+
+The Listing~\ref{listing:loops} calls the function \texttt{loops}.  This function contains several \texttt{for} loops and a \texttt{while} loop.  The first \texttt{for} loop uses values of \texttt{i} from 0 to 9.  The \texttt{range(10)} function creates a list of values from 0 to 9.  The loop prints the values of \texttt{i} to the standard output.
+
+Before the \texttt{while} loop, \texttt{range} is used to initialise a list called \texttt{values}.  The value of \texttt{i} is set to be the index of the last element in the \texttt{values} list.  The \texttt{while} loop continues while the value of \texttt{i} is greater than zero.  However, within the loop there is a conditional statement that breaks out of the loop if the value of \texttt{i} is equal to 3.  While the loop continues, the value of \texttt{i} and the value within the \texttt{values} list is printed.  At the end of the while loop, the value of \texttt{i} is reduced by 1.
+
+After the \texttt{while} loop, there is a \texttt{for} loop at Line~15.  This \texttt{for} loop contains another \texttt{for} loop at Line~16.  The inner \texttt{for} loop exits when the \texttt{sum} variable is greater than 20.  The purpose of this loop is to demonstrate that \texttt{break} only breaks out from the current loop.  The value of \texttt{sum} is printed to demonstrate this.
+
+\section{Operators}
+
+Similar to other programming languages, Python supports numeric and bitwise operators that can be used to operate on numeric or boolean data types.
+
+As discussed in Section~\ref{section:strings}, when the numeric addition operator is used with string variables it appends one string to another.  
+
+\subsection{Assignment operator}
+
+The assignment operator \texttt{=} can be used with all types, where its meaning depends on the type used.  For simple types that are mutable, such as numbers, string and booleans, the assignment operator copies the value into another variable.  However, for more complex types that are mutable, the assignment operator copies a reference to the original variable.  Therefore, an explicit copy may be needed to avoid unintentionally updating data values.
+
+An operation that results in a modification of a variable and re-assignment, can be shortened:
+%
+\begin{itemize}\parskip=0pt
+\item \texttt{variable~+=~value} $\implies$ \texttt{variable = variable + value}
+\item \texttt{variable~-=~value} $\implies$ \texttt{variable = variable - value}
+\item \texttt{variable~*=~value} $\implies$ \texttt{variable = variable * value}
+\item \texttt{variable~/=~value} $\implies$ \texttt{variable = variable / value}
+\item \texttt{variable~\%=~value} $\implies$ \texttt{variable = variable \% value}
+\item \texttt{variable~**=~value} $\implies$ \texttt{variable = variable ** value}
+\item \texttt{variable~//=~value} $\implies$ \texttt{variable = variable // value}
+\item \texttt{variable~\&=~value} $\implies$ \texttt{variable = variable \& value}
+\item \texttt{variable~|=~value} $\implies$ \texttt{variable = variable | value}
+\item \texttt{variable~\^{}=~value} $\implies$ \texttt{variable = variable \^{} value}
+\item \texttt{variable~>>=~value} $\implies$ \texttt{variable = variable >> value}
+\item \texttt{variable~<<=~value} $\implies$ \texttt{variable = variable << value}
+\end{itemize}
+%
+Unlike some other programming languages, Python does not allow \texttt{variable++} or\\ \texttt{variable--}.  The allowed operators are defined in the following subsections.
+
+\subsection{Numeric operators \label{section:numeric-operators}}
+
+Numeric operators can be used with both floating point and integer numbers.  The list of available operators is summarised in Table~\ref{table:numeric-operators}.
+%
+\begin{table}[h!!]
+  \begin{center}
+    \caption{Numeric operators.}
+    \label{table:numeric-operators}
+    \begin{tabular}{l|l} \hline
+      \textbf{Operator} & \textbf{Name}\\
+      \hline
+      \texttt{+} & Addition\\
+      \texttt{-} & Subtraction\\
+      \texttt{*} & Multiplication\\
+      \texttt{/} & Division\\
+      \texttt{\%} & Modulus\\
+      \texttt{**} & Exponentiation (power)\\
+      \texttt{//} & Floor division\\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\subsection{Comparison and logical operators \label{section:logical-operators}}
+
+Comparison and logical operators can be used with numeric and boolean types, where a subset of them are useful with boolean types.  The comparison and logical operators are summarised in Table~\ref{table:logical-operators}.
+%
+\begin{table}[h!!]
+  \begin{center}
+    \caption{Comparison and logical operators.}
+    \label{table:logical-operators}
+    \begin{tabular}{l|l} \hline
+      \textbf{Operator} & \textbf{Name}\\
+      \hline
+      \texttt{==} & Equal to\\
+      \texttt{!=} & Not equal to\\
+      \texttt{>} & Greater than\\
+      \texttt{<} & Less than\\
+      \texttt{>=} & Greater than or equal to\\
+      \texttt{<=} & Less than or equal to\\
+      \texttt{and} & True if both statements are true\\
+      \texttt{or} & True if one of the statements is true\\
+      \texttt{not} & Returns the opposite of the statement state\\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\subsection{Identity and membership operators \label{section:id-mem-operators}}
+
+Identity and membership objects are useful when operating on lists, dictionaries or other objects.  For example, searching for a value within a list can be achieved using the membership operator \texttt{in}.  The identity and membership operators are summarised in Table~\ref{table:id-mem-operators}.
+%
+\begin{table}[h!!]
+  \begin{center}
+    \caption{Comparison and logical operators.}
+    \label{table:id-mem-operators}
+    \begin{tabular}{l|l} \hline
+      \textbf{Operator} & \textbf{Name}\\
+      \hline
+      \texttt{is} & True if both variables are same object\\
+      \texttt{is not} & True if both variables are not the same object\\
+      \texttt{in} & True if found in object\\
+      \texttt{not in} & True if not found in object\\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\subsection{Bitwise operators \label{section:bitwise-operators}}
+
+Bitwise operators can be used with numeric and boolean types, where a subset of them are applicable to booleans.  The bitwise operators are summarised in Table~\ref{table:bitwise-operators}.
+%%
+\begin{table}[h!!]
+  \begin{center}
+    \caption{Bitwise operators.}
+    \label{table:bitwise-operators}
+    \begin{tabular}{l|l} \hline
+      \textbf{Operator} & \textbf{Name}\\
+      \hline
+      \texttt{\&} & AND\\
+      \texttt{|} & OR\\
+      \texttt{\^{}} & Exclusive OR (XOR)\\
+      \texttt{\~} & NOT\\
+      \texttt{<<} & Left shift\\
+      \texttt{>>} & Right shift\\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\section{Classes}
+
+In a similar manner as other languages that support object orientated programming, Python allows classes to be created.  A class can contain just data members, just functions or a mixture of both.  A class should have a clear purpose within the design of a program, where some classes are more data rich than others.
+
+The Listing~\ref{listing:classes} demonstrates how to implement classes.  The example program contains two classes \texttt{Computer} and \texttt{SuperComputer}.  The class \texttt{SuperComputer} inherits from the class \texttt{Computer}.  The class \texttt{Computer} contains three public data members \texttt{address}, \texttt{cpu} and \texttt{ram} and one private data member \texttt{\_\_privateInfo}.  The private data member is only accessible within an object of the class \texttt{Computer}, whereas the other data members are accessible to other source code.
+
+Python classes can contain several standard functions that have specific purposes.  The constructor is called \texttt{\_\_init\_\_}.  A non-static class function, such as the constructor, must have \texttt{self} as its first argument in a function definition.  This refers to the current object instance.  For a default constructor, \texttt{\_\_init\_\_} only has an argument \texttt{self}.  In the presented example, the constructors of \texttt{Computer} and \texttt{SuperComputer} both require a single value \texttt{cpu}.
+
+When a Python object is cast to a string by using the \texttt{str} function, the \texttt{\_\_str\_\_} member function is called.  Python expects that this function will return a string.  Both \texttt{Computer} and \texttt{SuperComputer} classes contain a \texttt{\_\_str\_\_} member function to allow the contents of an object to be printed easily.
+
+If a Python list or other compound object is cast to a string then Python calls the \texttt{\_\_repr\_\_} function.  This function should also return a string.  This function has been implemented for \texttt{Computer} and \texttt{SuperComputer} to allow the contents to be printed.
+
+When referring to data members or member functions within a class, the \texttt{self} prefix must be used.  This is needed to differentiate between data and functions that belong to the class or are only defined within the specified scope.
+
+\lstinputlisting[caption=Classes.py,label=listing:classes,firstline=3]{../03/python/Classes.py}
+
+The Listing~\ref{listing:classes} calls the function \texttt{classes}.  The \texttt{classes} function creates a \texttt{Computer} and \texttt{SuperComputer} object.  The code attempts to set the private data member from outside the class, which fails.  Then the values stored in the objects are printed to the screen.
+
+The list \texttt{farm} is used to demonstrate how to create a list of objects.  Once the list has been filled, the contents of the list is printed to the standard output.     
+
+\section{Unit tests}
+
+Software should be developed with matching unit tests.  The purpose of a unit test is to verify that a unit of software works as expected.  This is particularly useful when several developers are working on the same piece of software or when a piece of software is developed over a long period of time.
+
+The Listing~\ref{listing:unittests} demonstrates how to use unit tests in Python.  Normally, one unit test class should be created to match one class that has been implemented in a program.  Ideally, the name of the test class should match the name of the class it is testing, where a ``Test'' prefix is added to the test class name.  In this example program, existing mathematical functions have been used for simplicity.
+
+\lstinputlisting[caption=UnitTests.py,label=listing:unittests,firstline=3]{../03/python/UnitTests.py}
+
+The Listing~\ref{listing:unittests} calls the \texttt{unittest.main} function.  Since the class \texttt{TestMathMethods} inherits from the class \texttt{unittest.TestCase}, each of the test functions in the class are called in turn.
+
+The \texttt{unittest.TestCase} provides the functions \texttt{assertTrue} and \texttt{assertEqual}.  The function \texttt{assertTrue} requires that the value passed to it is \texttt{True}.  This could be the result of a logical comparison.  In this simple example, \texttt{True} is passed to the function.
+
+The function \texttt{assetEqual} is used to compare two values and require that they must be equal to each other.  In this example, results from three mathematical operators are compared with expected values. 
+
+\section{Command-line inputs}
+
+It can be useful to be able to control a program using command-line inputs.  Python supports command-line inputs in a similar manner as C or C++.  The Listing~\ref{listing:cmdinputs} demonstrates some of this functionality.
+
+\lstinputlisting[caption=CmdInputs.py,label=listing:cmdinputs,firstline=3]{../03/python/CmdInputs.py}
+
+The Listing~\ref{listing:unittests} calls the \texttt{main} function.  The \texttt{main} function retrieves the command-line arguments using \texttt{sys.argv}.  When a script is run without additional command-line arguments, \texttt{sys.argv} contains one element which is the path of the script that was run.  Any command-line arguments are stored in subsequent elements of \texttt{sys.argv}.
+
+The Listing~\ref{listing:unittests} demonstrates how to use \texttt{getopt} to specify and read the options \texttt{"-h"}, \texttt{"--help"}, \texttt{"-o"} and \texttt{"--output"}.  If the  \texttt{"-o"} or \texttt{"--output"} option is not followed by a string or the user provides \texttt{"-h"} or \texttt{"--help"}, the usage is printed by calling the function \texttt{usage}.
+
+The example program includes a \texttt{try} and \texttt{except} clause.  This is needed to catch a possible exception.  Several commands in Python may throw exceptions.  A Python program should catch exceptions that might occur and provide the user with information as to what occurred.  More documentation on possible exceptions is given in function reference documentation~\cite{python-doc} and \cite{python-w3schools}.
+
+\section{Input/Output operations}
+
+Python libraries exist to write and read many different data formats.  In this section, a few of the common data formats are discussed.  These have been selected, since they are supported by basic Python libraries.
+
+\subsection{Text files}
+
+It may be necessary to read data from a text file, which does not have a common structure.  Python provides simple functionality that can be used to read a text file line by line or all lines at once into memory.  The Listing~\ref{listing:fileio} demonstrates how to write a text file line by line and read it back into an array of lines.
+
+\lstinputlisting[caption=FileIO.py,label=listing:fileio,firstline=3]{../04/python/FileIO.py}
+
+The Listing~\ref{listing:fileio} calls the function \texttt{writeFile} to write a text file that contains some data values.  Then it calls \texttt{readFile} to read the text file and print the values to the standard output.
+
+The \texttt{writeFile} function creates a file and then writes data to it.  If the file already exists, it is truncated and overwritten.  The \texttt{write} function is used to write a string to the output file.  To complete the line, a newline character is appended to the string.  The output data comprises a title, the current date and three IP addresses.  The text file \texttt{fileIO.txt} is written in the present working directory.
+
+The \texttt{readFile} function opens the file written by \texttt{writeFile} as a file to be read.  It then reads all of the lines into a list and the input file is closed.  A dictionary is created to hold the data labels \texttt{"Date"} and \texttt{"Values"} and the values that are associated with them.  The function \texttt{strip} is used to remove the newline character.  The \texttt{startswith} function is used to match the dictionary key against the start of a line.  Then the rest of the line is assigned as the dictionary value.  At the end of the data input, the values that have been read are printed to the standard output.
+
+\subsection{CSV files}
+
+Comma separated value (CSV) files are often used to store data, taken from equipment or as an intermediate format.  The Listing~\ref{listing:csvio} demonstrates how to write a CSV file using the standard Excel format and read the CSV data back in again.
+
+\lstinputlisting[caption=CsvIO.py,label=listing:csvio,firstline=3]{../04/python/CsvIO.py}
+
+The Listing~\ref{listing:csvio} calls the function \texttt{writeCSV} to write two columns to a CSV file.  The function opens an output text file without a new line character.  Then the \texttt{csv.writer} function is used to configure the output to use a comma delimiter and double quotes for non-numeric values.  These are the settings that Excel uses for CSV files by default, which are robust to additional commas being written within output strings.
+
+The data to be written are stored in a dictionary, where the key name of the dictionary is the column name in the CSV file and the values are lists of entries for the given column.  The rows of the CSV file are written by calling the \texttt{writerow} function, first for the header row and then for each row of values that is stored within the dictionary.  The CSV file is written within the present working directory.
+
+The \texttt{readCSV} function is called to open the CSV file and read the data back into a dictionary.  The first row of the file is assumed to contain the column names.  The order of the column names in the first row is then used to assign the values to the dictionary.  A conditional statement is used to prevent the index that is used with the \texttt{row} list from being out of range.
+
+\subsection{JSON files}
+
+JavaScript Object Notation (JSON) files are often used to send data to and from web services.  They are also used within NoSQL databases and for data storage.  The Listing~\ref{listing:jsonio} demonstrates how to write and read two classes from a JSON file.
+
+\lstinputlisting[caption=JsonIO.py,label=listing:jsonio,firstline=3]{../04/python/JsonIO.py}
+
+The Listing~\ref{listing:jsonio} contains the definition of two classes \texttt{DataSet} and \texttt{DataSlice}.  The \texttt{DataSet} has a name and a dictionary of \texttt{DataSlice} objects.  The key for the dictionary entries is the name of the \texttt{DataSlice} object.  The \texttt{DataSet} and \texttt{DataSlice} class contain functions to return their contents as a string and functions to read and write to JSON objects.
+
+The example program calls \texttt{writeJson} to write a JSON file in the present working directory.  Then \texttt{readJson} is called to load the information back into memory and print it to the standard output.
+
+The \texttt{writeJson} function creates a \texttt{DataSet} object that contains two \texttt{DataSlice} objects.  The \texttt(toJson) function in the \texttt{DataSet} class is then called to convert these data objects to a format that can be written to a JSON file. An output text file is opened and the JSON file is written with options that make it easier for a human to read.  The output file is then closed.
+
+The \texttt{readJson} function opens the existing JSON file and loads the data into memory.  The file is then closed.  A new \texttt{DataSet} object is created and the \texttt{fromJson} member function is called to fill it from the JSON data.  Finally, the values in the \texttt{DataSet} and \texttt{DataSlice} objects are printed to the standard output.
+
+\subsection{Pickle files}
+
+Pickle files provide a mechanism to save and restore Python objects.  They are written to or read from binary files.  Pickle files should not be read from an untrusted source, since they can be used maliciously to attack the functionality of a program.  The Listing~\ref{listing:pickleio} demonstrates how to write and read an object from a pickle file.
+
+\lstinputlisting[caption=PickleIO.py,label=listing:pickleio,firstline=3]{../04/python/PickleIO.py}
+
+The Listing~\ref{listing:pickleio} contains a single class definition, which has a constructor and a string function.  The constructor assigns a data value to a private data member \texttt{\_\_private}.  The string method returns the value of this data member with its name.
+
+The function \texttt{writePickle} is called to write the Pickle file.  It creates a new \texttt{DataObject} object, opens a binary output file, dumps the pickled object into the output file and closes the output file.
+
+The function \texttt{readPickle} is called to read the Pickle back into memory and print the value of the \texttt{\_\_private} data member.  The function opens the binary input file, loads the pickle creating the class, closes the input file and prints the value that is stored in \texttt{\_\_private} data member.
+
+\section{Comments \label{section:comments}}
+
+In this document, comments are not used within the source code since the code is discussed within the document.  However, one should normally add comments to Python code.  Comments should explain the function of the code, rather than replicate the Python code itself.  Python comments can be converted into documentation using the \texttt{pydoc} program~\cite{pydoc}.  Therefore, comments are useful beyond just when reading the code.
+
+Python allows single line comments to be made with \texttt{\#} and multiple line comments to be made with three \texttt{"} characters.  An example of single and multiple line comments is given in Listing~\ref{listing:comments}.  The comments in this Listing are verbose, since the code is part of a program that was written for education purposes.  Normally, comments can assume that the reader understands the Python programming language itself.
+
+\begin{lstlisting}[caption={Python comments.},label=listing:comments]
+import random
+
+"""
+A function to simulate rolling two dice.  The function returns
+a random value between 2 and 12.
+"""
+def rollTwoDice():
+    return random.randint(1,6) + random.randint(1,6)
+
+"""
+A program to simulate the rolling of two dice.
+"""
+def main():
+    # A list to contain the total value rolled.
+    # There are 12 elements, because the total value that can be
+    # rolled is 12.
+    counters=[0.]*12
+
+    # Roll two dice 100 times.
+    nRolls = 100
+    for i in range(nRolls):
+        totalValue = rollTwoDice()  # roll the dice
+
+        # Python list indices count from zero.  Therefore, have 
+        # to remove one from the totalValue to put it into the 
+        # right index in the list.
+        counters[totalValue-1] = counters[totalValue-1] + 1. # count this total value
+
+  # Total probability is always defined as 1.
+  # Therefore, have to divide by the total number of counted
+  # values.
+  for i in range(len(counters)):
+      counters[i] = counters[i] / float(nRolls)
+  
+  # Now print out the probabilities for each of the combinations
+  print("The probabilities of rolling a total value using two dice:")
+  for i in range(len(counters)):
+      # Need to add one, since Python counts from zero.
+      print(" P("+str(i+1)+")="+str(counters[i]))
+  print("where P(n) is the probability of rolling a total of n on two dice.")
+\end{lstlisting}
+
+\section{Conclusions}
+
+This document introduces some features of the Python programming language, using a series of example programs.  The Python programming language provides developers with a large range of libraries and additional functionality that are not discussed within this document.  However, this document provides a good starting point to explore and understand more of the Python programming language.
+
+\bibliographystyle{unsrt}
+\bibliography{PythonProgramming}
+
+\end{document}
