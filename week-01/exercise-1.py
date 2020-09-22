@@ -18,15 +18,19 @@ numbers_list = [
     "ten",
 ]
 
+# This function converts the string input and return the index number in the list
+
 
 def converter(user_input):
     if user_input in numbers_list:
         return numbers_list.index(user_input) + 1
 
 
-# user_input=input("Please write a number :")
 if __name__ == "__main__":
     user_input = input("Please inter number : ")
+
+    # This to check the user input is not empty
+
     if len(user_input) == 0:
         print("Please enter a valid number")
     else:
