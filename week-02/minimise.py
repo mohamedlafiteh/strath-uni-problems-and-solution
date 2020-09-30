@@ -17,16 +17,10 @@ def values_function():
         y += [y_values]
         # y3 <y2 and y3 <y4
 
-    for num in range(len(y) - 1):
+    for num in range(len(y)):
         if num > 1:
             if y[num] < y[num - 1] and y[num] < y[num + 1]:
                 minimum[x[num]] = y[num]
-
-    newMinimaX = []
-    for key in minimum.keys():
-        newMinimaX += [key]
-
-    newMinimaX.sort()
 
     return list(minimum.keys())
 
