@@ -11,8 +11,14 @@ class Customer:
         self.last_name = last_name
         self.purchase_list = []
 
+    def __repr__(self):
+        return f"Customer { self.name} purchase total: {sum(self.purchase_list)}"
+
 
 class Purchase:
     def __init__(self, item_id, amount_paid):
         self.item_id = item_id
         self.amount_paid = amount_paid
+
+    def __repr__(self):
+        return f"item { self.item_id} total paid : {self.amount_paid}"
