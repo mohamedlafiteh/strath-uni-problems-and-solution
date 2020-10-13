@@ -1,0 +1,30 @@
+rows = read JSON data
+
+numberOfRows = len(rows)
+
+lastPosition = 0
+previousLast = 0
+gradientSign = 0
+
+FOR i = 0 ;i< numberOfRows; i++
+  IF i == 0:
+    lastPosition = rows[i]["distance"]
+    continue
+  IF i == 1:
+    previousLast = lastPosition
+    lastPosition = rows[i]["distance"]
+    continue
+
+  IF lastPosition > previousLast:
+    gradientSign = 1
+  IF lastPosition < previousLast:
+    gradientSign = -1
+  
+  IF gradientSign > 0 AND lastPosition > currentPosition:
+    store the maximum
+  ELIF gradientSign < 0 AND lastPosition < currentPosition:
+    store the minimum
+
+  previousLast = lastPosition
+  lastPosition = rows[i]["distance"]
+
