@@ -17,10 +17,10 @@ class three_vector:
         if self.x and self.y and self.z == 0:
             return 0
         else:
-            return math.atan2(math.sqrt((self.x**2) + (self.y**2)), self.z)
+            return math.atan2(math.sqrt(self.z, (self.x ** 2) + (self.y ** 2)))
 
     def resultant(self):
-        return math.sqrt(pow(self.x, 2)+pow(self.y, 2)+pow(self.z, 2))
+        return math.sqrt(pow(self.x, 2) + pow(self.y, 2) + pow(self.z, 2))
 
 
 test1 = three_vector(10, 20, 30)
