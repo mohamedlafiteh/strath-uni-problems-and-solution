@@ -4,12 +4,16 @@ import json
 
 class ItemAndQty:
     def __init__(self, item_name, price, quantity):
-        self.item_name = item_name
-        self.price = price
-        self.quantity = quantity
+        self.item_name = str(item_name)
+        self.price = float(price)
+        self.quantity = int(quantity)
 
     def __repr__(self):
-        return f"The name is { self.item_name}, the price is {self.price}, quantity is {self.quantity}\n"
+        s = "The item name : " + str(self.item_name) + ".\n"
+        s += "The item price : " + str(self.price) + ",.\n"
+        s += "The quantity : " + str(self.quantity) + "."
+
+        return s
 
     def cost(self):
         return self.price * self.quantity
@@ -66,7 +70,7 @@ class Shop:
 class ShoppingBasket:
     def __init__(self):
         self.shop = Shop("i1", 10, 0)
-        self.shop.load_initial_stock("./test.csv")
+        self.shop.load_initial_stock("./stock.csv")
         self.basket = {}
         self.total_cost = 0
 
@@ -88,15 +92,16 @@ class ShoppingBasket:
             self.total_cost += self.basket[item].cost()
         return self.total_cost
 
+    def clear_items(self):
+        self.basket.clear()
 
-# blah = Shop("i1", 10, 100)
-# blah.load_initial_stock("./test.csv")
-# print(blah.data_member)
-another_blah = ShoppingBasket()
-another_blah.add_item_and_qty("item_2", 15)
-another_blah.add_item_and_qty("item_2", 15)
-another_blah.add_item_and_qty("item_2", 15)
-another_blah.add_item_and_qty("item_2", 15)
-print(another_blah.basket)
-print(another_blah.shop.data_member)
-print(another_blah.calculate_total_cost())
+# another_blah = ShoppingBasket()
+# another_blah.add_item_and_qty("item_2", 15)
+# another_blah.add_item_and_qty("item_3", 10)
+# print("----------->", another_blah.basket)
+# print("------>", another_blah.calculate_total_cost())
+
+
+if __name__ == '__main__':
+
+    s = ItemAndQty("milk", 4, 8)
