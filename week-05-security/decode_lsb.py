@@ -16,19 +16,20 @@ def decode(inFile):
     # working ok
 
     def binary_to_decimal(binary):
-        string = int(binary, 2)
-        return string
+        dec_number = int(binary, 2)
+
+        return dec_number
 
     binary_text = str_to_binary
 
-    str_data = ' '
+    string_text = ' '
 
-    for i in range(0, len(binary_text), 7):
-        tem_d = binary_text[i:i + 7]
-        decimal_t = binary_to_decimal(tem_d)
-        string_text = string_text + chr(decimal_t)
+    for i in range(0, len(binary_text), 8):
+        tem_d = binary_text[i:i + 8]
+        decimal_n = binary_to_decimal(tem_d)
+        string_text = string_text + chr(decimal_n)
     # printing the result
     print("The string is :", string_text)
 
 
-decode("./s1.bmp")
+decode("./s2.bmp")
