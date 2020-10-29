@@ -7,7 +7,7 @@ class TestItemsShop(unittest.TestCase):
     def test_item_and_qty_repr(self):
         item = ItemAndQty("item1", 100, 10)
         result = "The item name : " + str(item.item_name) + ".\n"
-        result += "The item price : " + str(item.price) + ",.\n"
+        result += "The item price : " + str(item.price) + ".\n"
         result += "The quantity : " + str(item.quantity) + "."
 
         self.assertEqual(str(item), result)
@@ -16,7 +16,7 @@ class TestItemsShop(unittest.TestCase):
 
         shop = Shop("item_0", 0, 0)
 
-        shop.load_initial_stock("./stock.csv")
+        shop.load_initial_stock("./test_stock.csv")
 
         res = {
             "item_0": shop.data_member.get("item_0"),
@@ -37,6 +37,7 @@ class TestItemsShop(unittest.TestCase):
         shoppingBasket.add_item_and_qty("item_1", 30)
 
         self.assertEqual(shoppingBasket.calculate_total_cost(), 300)
+
 
 if __name__ == "__main__":
     unittest.main()
