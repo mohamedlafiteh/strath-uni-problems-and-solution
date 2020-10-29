@@ -1,6 +1,6 @@
 item_name,price,quantity
-"egg",4,6
-"milk",3,7
-"cheese",20,5
-"water",10,2
-
+item_1,10,100
+item_2,20,200
+item_3,30,300
+item_4,40,400
+item_5,50,500
