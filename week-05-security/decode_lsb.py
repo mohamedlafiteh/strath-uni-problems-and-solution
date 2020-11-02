@@ -9,7 +9,7 @@ def decode(inFile):
     # Iterate over pixels of the first row
     for x in range(0, image.width):
         r, g, b = pixels[x, 0]
-        # Store LSB of each color channel of each pixel
+        # Store LSB of each color channel of each pixel.
         str_to_binary += bin(r)[-1]
         str_to_binary += bin(g)[-1]
         str_to_binary += bin(b)[-1]
@@ -27,6 +27,7 @@ def decode(inFile):
         tem_d = binary_text[i:i + 8]
         decimal_n = binary_to_decimal(tem_d)
         string_text = string_text + chr(decimal_n)
+
     # printing the result
     print("The string is :", string_text)
 
