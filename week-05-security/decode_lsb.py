@@ -13,7 +13,6 @@ def decode(inFile):
         str_to_binary += bin(r)[-1]
         str_to_binary += bin(g)[-1]
         str_to_binary += bin(b)[-1]
-    # working ok
 
     def binary_to_decimal(binary):
         dec_number = int(binary, 2)
