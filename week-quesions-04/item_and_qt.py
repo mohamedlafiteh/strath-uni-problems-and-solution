@@ -1,5 +1,6 @@
 import csv
 import json
+from copy import copy
 
 
 class ItemAndQty:
@@ -30,9 +31,9 @@ class Shop:
 
     # This constractor has one data member a dictionary
 
-    def __init__(self, item_name, price, quantity):
-        item_and_qty = ItemAndQty(item_name, price, quantity)
-        self.data_member = {item_and_qty.item_name: item_and_qty}
+    def __init__(self):
+        #item_and_qty = ItemAndQty()
+        self.data_member = {}
 
 
 # This function create Item not exists or increment quantity by quantity supplied if it does.
@@ -94,30 +95,32 @@ class ShoppingBasket:
     def __init__(self, shop):
         self.shop = shop
         self.shop.load_initial_stock("./stock.csv")
-        self.basket = {}
+        self.basket = []
         self.total_cost = 0
 
     def add_item_and_qty(self, item_name, quantity):
-
         item = self.shop.item_and_qty_by_name(item_name)
+        # if the item exist in the shop
         if item:
-            item.quantity -= quantity
-            basket_item = self.basket.get(item.item_name)
-            if basket_item:
+            # if the item exist in the basket
+            if item in self.basket:
+                basket_item = self.basket[self.basket.index(item)]
                 basket_item.quantity += quantity
+            # if item is not exist in the basket
             else:
-                self.basket.update(
-                    Shop(
-                        item.item_name, item.price, quantity
-                    ).data_member
-                )
+                new_item = copy(item)
+                new_item.quantity = quantity
+                self.basket.append(new_item)
+            item.quantity -= quantity
+        else:
+            self.basket.append(item)
         return 0
 
 # This function calculate the total cost of items in the basket
 
     def calculate_total_cost(self):
         for item in self.basket:
-            self.total_cost += self.basket[item].cost()
+            self.total_cost += item.cost()
         return self.total_cost
 
 # This function clears all items in the basket
@@ -127,9 +130,15 @@ class ShoppingBasket:
 
 if __name__ == "__main__":
 
-    shop = Shop("item_0", 0, 0)
+    shop = Shop()
     shop.load_initial_stock("./stock.csv")
-    print("-------", shop.items_in_stock("item_8"))
+    # print("------->before", shop.data_member)
+
+    shop.add_item_and_qty({"item_name": "item_8", "price": 20, "quantity": 30})
+    shop.add_item_and_qty({"item_name": "item_8", "price": 20, "quantity": 30})
+
+    # print("------->after", shop.data_member)
 
     s = ShoppingBasket(shop)
-    s.add_item_and_qty("item_88", 3)
+    s.add_item_and_qty("item_4", 3)
+    print("------->", s.basket)
