@@ -12,7 +12,7 @@ class ItemAndQty:
         self.price = float(price)
         self.quantity = int(quantity)
 
-# This function prints the data members.
+# This method prints the data members.
 
     def __repr__(self):
         s = "The item name : " + str(self.item_name) + ".\n"
@@ -20,7 +20,7 @@ class ItemAndQty:
         s += "The quantity : " + str(self.quantity) + "."
         return s
 
-# The cost function returns the total cost of items by price and quantity multiplication.
+# The cost method returns the total cost of items by price and quantity multiplication.
 
     def cost(self):
         multiplication_result = self.price * self.quantity
@@ -32,11 +32,11 @@ class Shop:
     # This constractor has one data member a dictionary
 
     def __init__(self):
-        #item_and_qty = ItemAndQty()
+
         self.data_member = {}
 
 
-# This function create Item not exists or increment quantity by quantity supplied if it does.
+# This method create Item not exists or increment quantity by quantity supplied if it does.
 
 
     def add_item_and_qty(self, item):
@@ -50,7 +50,7 @@ class Shop:
             data_member = {item_and_qty.item_name: item_and_qty}
             self.data_member.update(data_member)
 
-# This function load the stock from csv file
+# This method load the stock from csv file
 
     def load_initial_stock(self, csv_file_path):
 
@@ -58,7 +58,7 @@ class Shop:
         for item in stock_list:
             self.add_item_and_qty(item)
 
-    # This function loads the csv in json format
+    # This method loads the csv in json format
 
     def csv_to_json(self, csv_file_path):
         item_list = []
@@ -73,7 +73,7 @@ class Shop:
                 item_list.append(item_dict)
         return item_list
 
-# This function returns ItemAndQty object by name or None if not exists
+# This method returns ItemAndQty object by name or None if not exists
 
     def item_and_qty_by_name(self, item_name):
         item = self.data_member.get(item_name)
@@ -82,7 +82,7 @@ class Shop:
             return item
         return None
 
-# This function returns quantity of the item by name or 0 if not exists
+# This method returns quantity of the item by name or 0 if not exists
 
     def items_in_stock(self, item_name):
         item = self.data_member.get(item_name)
@@ -98,6 +98,7 @@ class ShoppingBasket:
         self.basket = []
         self.total_cost = 0
 
+    # This method add items to the basket if they are in the shop or return 0 if not
     def add_item_and_qty(self, item_name, quantity):
         item = self.shop.item_and_qty_by_name(item_name)
 
@@ -118,14 +119,14 @@ class ShoppingBasket:
 
         return 0
 
-# This function calculate the total cost of items in the basket
+# This method calculate the total cost of items in the basket
 
     def calculate_total_cost(self):
         for item in self.basket:
             self.total_cost += item.cost()
         return self.total_cost
 
-# This function clears all items in the basket
+# This method clears all items in the basket
     def clear_items(self):
         self.basket.clear()
 
