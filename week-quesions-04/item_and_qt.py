@@ -100,20 +100,22 @@ class ShoppingBasket:
 
     def add_item_and_qty(self, item_name, quantity):
         item = self.shop.item_and_qty_by_name(item_name)
+
         # if the item exist in the shop
         if item:
             # if the item exist in the basket
             if item in self.basket:
                 basket_item = self.basket[self.basket.index(item)]
+
                 basket_item.quantity += quantity
+
             # if item is not exist in the basket
             else:
                 new_item = copy(item)
                 new_item.quantity = quantity
                 self.basket.append(new_item)
             item.quantity -= quantity
-        else:
-            self.basket.append(item)
+
         return 0
 
 # This function calculate the total cost of items in the basket
@@ -132,13 +134,3 @@ if __name__ == "__main__":
 
     shop = Shop()
     shop.load_initial_stock("./stock.csv")
-    # print("------->before", shop.data_member)
-
-    shop.add_item_and_qty({"item_name": "item_8", "price": 20, "quantity": 30})
-    shop.add_item_and_qty({"item_name": "item_8", "price": 20, "quantity": 30})
-
-    # print("------->after", shop.data_member)
-
-    s = ShoppingBasket(shop)
-    s.add_item_and_qty("item_4", 3)
-    print("------->", s.basket)
