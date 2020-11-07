@@ -7,24 +7,25 @@ from PIL import Image
 
 def encode(st, file_name):
 
-    # Getting the size of the string in bytes
-    str_size_in_byte = len(st.encode("utf-8"))
+    # get length of the message - pad with 0 so always same length
+    msg_len = str(len(st)).rjust(5, '0')
+    # append length and pad to start of message
+    st = msg_len + st
 
-    # Getting the size of the string in bits
+   # Getting the size of the string in bytes
+    str_size_in_byte = len(st.encode("utf-8"))
     str_size_in_bit = str_size_in_byte * 8
 
-    # Getting binary data from a string
+    #binary_data_from_string = "".join(format(ord(x), 'b') for x in st)
     binary_data_from_string = "".join([bin(ord(x))[2:].zfill(8) for x in st])
-    # binary_data_from_string_size_in_byte = bin(
-    #     str_size_in_byte).replace("0b", "")
 
     i = 0
     with Image.open(file_name) as img:
-        # Getting the size of the image in bytes
         img_size_in_byte = len(img.fp.read())
 
         if str_size_in_bit < img_size_in_byte:
             # Checking the file format if it is BMP
+
             format_check = img.format
             if format_check == "BMP":
                 width, height = img.size
